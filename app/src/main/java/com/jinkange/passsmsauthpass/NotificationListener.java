@@ -54,7 +54,8 @@ public class NotificationListener extends NotificationListenerService {
                 || sbn.getPackageName().equals("com.android.messaging") || sbn.getPackageName().equals("com.lge.message")
                 || sbn.getPackageName().equals("com.htc.sense.messaging") || sbn.getPackageName().equals("com.motorola.messaging")) {
 
-            if (text.toString().contains("한국모바일인증")) {
+            if (text.toString().contains("한국모바일인증") ||
+                    text.toString().contains("NICE아이디")) {
                 String extractedCode = extractSixDigitCode(text.toString());
                 if (extractedCode != null) {
                     Log.d("SmsReceiver", "추출된 인증번호: " + extractedCode);
