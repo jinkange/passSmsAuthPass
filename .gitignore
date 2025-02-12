@@ -1,0 +1,65 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+# 빌드 산출물
+*.apk
+*.ap_
+*.aab
+
+# ART/Dalvik VM 관련 파일
+*.dex
+
+# Java 컴파일 결과
+*.class
+
+# 생성된 파일 및 폴더
+bin/
+gen/
+out/
+
+# Gradle 관련 파일
+.gradle/
+build/
+!gradle-wrapper.jar
+
+# 로컬 환경 설정 파일 (예: SDK 경로)
+local.properties
+
+# Proguard 관련 폴더 (Eclipse 등에서 생성된 경우)
+proguard/
+
+# 로그 파일
+*.log
+
+# Android Studio 관련 설정 파일
+*.iml
+.idea/
+captures/
+
+# Keystore 파일 (보안상의 이유로 관리하지 않음)
+*.jks
+
+# Google Services 설정 파일
+google-services.json
+
+# Android NDK 빌드 파일
+obj/
+
+# Crashlytics에서 생성된 파일
+fabric.properties
+
+# OS 관련 불필요 파일 (macOS 등)
+.DS_Store
+
