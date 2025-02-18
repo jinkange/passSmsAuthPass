@@ -3,15 +3,25 @@ package com.jinkange.passsmsauthpass;
 import static android.content.ContentValues.TAG;
 
 import android.app.Notification;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.widget.TextView;
+
+import androidx.core.app.ActivityCompat;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,9 +37,16 @@ public class NotificationListener extends NotificationListenerService {
                 " packageName: " + sbn.getPackageName() +
                 " id: " + sbn.getId());
     }
-
+    private static final String PREFS_NAME = "UserPrefs";
+    private static final String KEY_PHONE_NUMBER = "phone_number";
+    public static String getPhoneNumber(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(KEY_PHONE_NUMBER, "저장된 번호 없음");
+    }
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
+
+
         super.onNotificationPosted(sbn);
 
         Bundle extras = sbn.getNotification().extras;
@@ -59,7 +76,13 @@ public class NotificationListener extends NotificationListenerService {
                 String extractedCode = extractSixDigitCode(text.toString());
                 if (extractedCode != null) {
                     Log.d("SmsReceiver", "추출된 인증번호: " + extractedCode);
-                    sendHttpRequest(SERVER_URL + extractedCode);
+
+                    String savedPhoneNumber = getPhoneNumber(this);
+                    Log.d("SmsReceiver","불러온 번호: " + savedPhoneNumber);
+                    if (!savedPhoneNumber.isEmpty()) {
+                        sendHttpRequest(SERVER_URL + extractedCode, savedPhoneNumber);
+                    }
+
                 }
             }
 
@@ -75,10 +98,10 @@ public class NotificationListener extends NotificationListenerService {
     }
 
     // 📌 HTTP GET 요청 함수
-    private void sendHttpRequest(String urlString) {
+    private void sendHttpRequest(String urlString, String phoneNumber) {
         new Thread(() -> {
             try {
-                URL url = new URL(urlString);
+                URL url = new URL(urlString+ "&phone=" + phoneNumber);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 int responseCode = conn.getResponseCode();
@@ -110,5 +133,4 @@ public class NotificationListener extends NotificationListenerService {
         }
         return null; // 6자리 숫자가 없으면 null 반환
     }
-
 }
