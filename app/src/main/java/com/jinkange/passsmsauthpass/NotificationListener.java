@@ -66,13 +66,13 @@ public class NotificationListener extends NotificationListenerService {
         } else {
             text = extras.getCharSequence(Notification.EXTRA_TEXT);
         }
-        //KT일때 문자(com.samsung.android.messaging) , LG일때 (com.android.cellbroadcastreceiver)
         if (sbn.getPackageName().equals("com.samsung.android.messaging") || sbn.getPackageName().equals("com.android.cellbroadcastreceiver")
                 || sbn.getPackageName().equals("com.android.messaging") || sbn.getPackageName().equals("com.lge.message")
                 || sbn.getPackageName().equals("com.htc.sense.messaging") || sbn.getPackageName().equals("com.motorola.messaging")) {
 
             if (text.toString().contains("한국모바일인증") ||
-                    text.toString().contains("NICE아이디")) {
+                    text.toString().contains("NICE아이디") ||
+                    text.toString().contains("드림시큐리티")) {
                 String extractedCode = extractSixDigitCode(text.toString());
                 if (extractedCode != null) {
                     Log.d("SmsReceiver", "추출된 인증번호: " + extractedCode);
